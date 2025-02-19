@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SGE - Fornecedores
+{% endblock %}
+
+{% block content %}
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <form method="get" action="{% url 'fornecedor_list' %}">
+      <div class="input-group">
+        <input type="text" class="form-control" name="nome" placeholder="Nome" value="{{ request.GET.nome }}">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  {% if perms.fornecedores.add_fornecedor %}
+  <div class="col-md-6">
+    <a href="{% url 'fornecedor_create' %}" class="btn btn-success float-end">
+      <i class="bi bi-plus"></i> Novo Fornecedor
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for fornecedor in fornecedores %}
+      <tr>
+        <td>
+          <a href="{% url 'fornecedor_detail' fornecedor.id %}" class="text-primary fw-semibold">
+            {{ fornecedor.id }}
+          </a>
+        </td>
+        <td>{{ fornecedor.nome }}</td>
+        <td>{{ fornecedor.descricao }}</td>
+        <td>
+          <a href="{% url 'fornecedor_detail' fornecedor.id %}" class="btn btn-info btn-sm">
+            <i class="bi bi-eye"></i>
+          </a>
+
+          {% if perms.fornecedores.change_fornecedor %}
+          <a href="{% url 'fornecedor_update' fornecedor.id %}" class="btn btn-warning btn-sm">
+            <i class="bi bi-pencil"></i>
+          </a>
+          {% endif %}
+
+          {% if perms.fornecedores.delete_fornecedor %}
+          <a href="{% url 'fornecedor_delete' fornecedor.id %}" class="btn btn-danger btn-sm btn-delete">
+            <i class="bi bi-trash"></i>
+          </a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% include 'components/_pagination.html' %}
+
+{% endblock %}

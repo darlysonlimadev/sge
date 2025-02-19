@@ -13,7 +13,16 @@ def home(request):
     graphic_product_brand_metric = metrics.get_graphic_product_brand_metric()
     daily_sales_data = metrics.get_daily_sales_data()
     daily_sales_quantity_data = metrics.get_daily_sales_quantity_data()
-    ai_result = AIResult.objects.first().result
+    #ai_result = AIResult.objects.first().result
+
+    ai_result_obj = AIResult.objects.first()  # Pega o primeiro registro
+
+    if ai_result_obj:
+        ai_result = ai_result_obj.result  # Se existir, acessa o atributo
+    else:
+        ai_result = "Sem resultados"  # Ou defina um valor padrão
+
+    print(ai_result)  # Para testar se o valor está correto
 
     context = {
         'product_metrics': product_metrics,
